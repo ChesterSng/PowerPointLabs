@@ -370,17 +370,23 @@ namespace PowerPointLabs.PositionsLab
 
         void _leftMouseDownListener_Rotation(object sender, SysMouseEventInfo e)
         {
-            try
-            {
-                ToggleButton button = ((bool)rotationButton.IsChecked) ? rotationButton :
+            ToggleButton button = ((bool)rotationButton.IsChecked) ? rotationButton :
                              ((bool)duplicateRotationButton.IsChecked) ? duplicateRotationButton
                                                                        : null;
-
+            try
+            {
                 if (button.IsMouseOver)
                 {
                     DisableRotationMode();
                     return;
                 }
+
+                //if (_refPoint == null)
+                //{
+                //    DisableRotationMode();
+                //    button.IsChecked = false;
+                //    return;
+                //}
 
                 System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
                 Shape selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
@@ -426,6 +432,8 @@ namespace PowerPointLabs.PositionsLab
             }
             catch (Exception ex)
             {
+                DisableRotationMode();
+                button.IsChecked = false;
                 Logger.LogException(ex, "Rotation");
             }
         }
